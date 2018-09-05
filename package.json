@@ -1,5 +1,6 @@
 {
   "name": "solidity-gis",
+  "license" : "See license in LICENSE file" 
   "version": "0.0.1",
   "requires": true,
   "lockfileVersion": 1,
