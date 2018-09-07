@@ -46,7 +46,8 @@ library ArrayStorage32Lib {
     */
     function removeElements(int32[] storage shelf, uint amount, uint offset) internal {
         require(offset + amount < shelf.length);
-        for (uint i = 0; i < amount; i++) {
+        uint to = shelf.length - amount - offset;
+        for (uint i = 0; i < to; i++) {
             shelf[offset + i] = shelf[offset + i + amount];
         }
 

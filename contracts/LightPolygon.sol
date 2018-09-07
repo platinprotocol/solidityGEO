@@ -121,6 +121,8 @@ contract LightPolygon is Polygon, MultipleOracled {
         onlyOracle
     {
         require(ringsSizes.length > ringIndex);
+        //Min points amount per ring is 3
+        require(ringsSizes[ringIndex] - MIN_POINTS_AMOUNT_PER_RING >= amount);
         //To get offset in cells we have to multiply offset in points per 2.
         offset = offset.mul(CELLS_PER_POINT);
         //To get amount in cells we have to multiply amount in points per 2.

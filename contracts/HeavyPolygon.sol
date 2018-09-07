@@ -139,6 +139,8 @@ contract HeavyPolygon is Polygon, MultipleOracled {
         onlyIfMutable
         onlyOracle
     {
+        //Min points amount per ring is 3
+        require(ringsSizes[ringIndex] - MIN_POINTS_AMOUNT_PER_RING >= amount);
         require(ringsSizes.length > ringIndex);
         //To get offset in cells we have to multiply offset in points per 2.
         offset = offset.mul(CELLS_PER_POINT);

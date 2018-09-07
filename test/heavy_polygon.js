@@ -3,12 +3,12 @@ const utils = require('ethereumjs-util');
 var HeavyPolygon = artifacts.require("./HeavyPolygon.sol");
 
 contract('HeavyPolygon', function (accounts) {
-    const initPolygon = [2, 6, 3, 3, 177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 65000000, 20000000, -51000000, 25000000, -164000000, -4000000];
+    const initPolygon = [2, 8, 4, 4, 177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 12242224, -19802040, 65000000, 20000000, -51000000, 25000000, -164000000, -4000000, -164000000, -4000000];
     // const cellsPerPoint = 2;
-    const initFirstRing = [177200246, 110441952, 25242204, 39802040, 15242224, -39802040];
-    const initSecondRing = [65000000, 20000000, -51000000, 25000000, -164000000, -4000000];
+    const initFirstRing = [177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 12242224, -19802040];
+    const initSecondRing = [65000000, 20000000, -51000000, 25000000, -164000000, -4000000, -164000000, -4000000];
     const initRingsAmount = 2;
-    const initTotalPointsAmount = 6;
+    const initTotalPointsAmount = 8;
     var contract;
 
     beforeEach(async function () {
@@ -100,8 +100,8 @@ contract('HeavyPolygon', function (accounts) {
         let amount = 1;
         let ringIndex = 0;
         let offset = 1;
-        let expectedFirstRing = [177200246, 110441952, 15242224, -39802040];
-        //const initFirstRing = [177200246, 110441952, 25242204, 39802040, 15242224, -39802040];
+        let expectedFirstRing = [177200246, 110441952, 15242224, -39802040, 12242224, -19802040];
+        //const initFirstRing = [177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 12242224, -19802040];
         return contract.removePoints(amount, ringIndex, offset).then(function(tr) {
             return contract.getPoints.call();
         }).then(function(firstRingPoints) {
@@ -130,10 +130,10 @@ contract('HeavyPolygon', function (accounts) {
     });
 
     it ("Add points from specific index to ring", function() {
-        let insertedPoints = [117200246, -110441952, -98242233, 41822041, -2, -3, -4, -5, -3, -4, -3, -3, -2, -3, 4, -3];
+        let insertedPoints = [117200246, -110441952, -98242233, 41822041];
         let ringIndex = 1;
-        let offset = 2;
-        let expectedSecondRing = [65000000, 20000000, -51000000, 25000000, 117200246, -110441952, -98242233, 41822041, -2, -3, -4, -5, -3, -4, -3, -3, -2, -3, 4, -3, -164000000, -4000000];
+        let offset = 1;
+        let expectedSecondRing = [65000000, 20000000, 117200246, -110441952, -98242233, 41822041, -51000000, 25000000, -164000000, -4000000, -164000000, -4000000];
 
         return contract.addPoints(insertedPoints, ringIndex, offset).then(function() {
             return contract.getPointsByRing(ringIndex);
