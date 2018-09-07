@@ -166,7 +166,7 @@ contract LightPolygon is Polygon, MultipleOracled {
     }
 
     function removeRing(uint8 ringIndex) public onlyIfMutable onlyOracle {
-        require(ringsSizes.length > ringIndex);
+        require(ringsSizes.length > ringIndex && ringsSizes.length > 1);
 
         uint32 pointsDeleted = ringsSizes[ringIndex];
         pointsAmount = pointsAmount.sub(pointsDeleted);
