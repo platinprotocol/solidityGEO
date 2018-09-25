@@ -6,9 +6,9 @@ Solidity GEO
 | A polygon contains an array of rings.
 | Each ring is represented as an array of points. The first point of each ring is always the same as the last point. 
 | Each point contain from two cells first cell is latitude, second cell is longitude.
-| The polygon consists of int32 array. Where max allowed value is 180000000.
+| The polygon consists of int32 array. Where max allowed value for latitude is 90000000 and for longitude is 180000000.
 | Solidity support only integers so 180000000 will represent 180.000000.
-| So if you whant to store geoPoint(79.123, -110.000287) you have send it like(79123000, -110000287)
+| So if you whant to store geoPoint(79.123, -110.000287) you have send it like(79123000, -110000287).
 
 
 Quickstart
