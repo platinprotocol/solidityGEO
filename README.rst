@@ -8,6 +8,7 @@ Solidity GEO
 | Each point contain from two cells first cell is latitude, second cell is longitude.
 | The polygon consists of int32 array. Where max allowed value is 180000000.
 | Solidity support only integers so 180000000 will represent 180.000000.
+| So if you whant to store geoPoint(79.123, -110.000287) you have send it like(79123000, -110000287)
 
 
 Quickstart
@@ -31,7 +32,7 @@ Quickstart
 | Min points amount per ring is 3, max points amount depend on gas limit.
 | The sum of the points in the rings should be equal to the total number of points in the polygon.
 
-Contract functions
+Polygon functions
 ---------------
 
 - makeImmutable() public
@@ -121,3 +122,13 @@ Get rings amount in polygon
 - isImmutable() public view returns (bool)
 
 If function returned true then polygon is immutable (no one will be able to change its state).
+
+Circle functions
+---------------
+
+- getData() public view returns(int32[])
+
+Generate data array with size of 3 elements.
+Zero cell contains latitude
+First cell contains longitude
+Second cell contains radius

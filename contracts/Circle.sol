@@ -24,7 +24,17 @@ contract Circle {
     int32 public longitude;
 
     int32 public radius;
-
+    /**
+     * @notice Create smart contract with predefined circle.
+     * @dev Data format:
+     * Zero cell contain latitude.
+     *          (date[0])
+     * First cell contain longitude.
+     *          (date[1])
+     * Third cell contain radius
+     *          (date[2])
+     * @param data circle predefined data.
+     */
     constructor (int32[] data) public {
         require(data.length == 3);
         require(data[0] <= MAX_LATITUDE && data[0] >= MIN_LATITUDE);
