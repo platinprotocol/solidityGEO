@@ -1,7 +1,13 @@
 {
   "name": "solidity-gis",
-  "license" : "See license in LICENSE file" ,
-  "version": "0.0.1",
+  "license": "SEE-LICENSE-IN-LICENSE-FILE",
+  "description": "Solidity GEO implements GIS polygon core functions and circle functions.",
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/platinprotocol/solidityGEO.git"
+  },
+  "homepage": "https://github.com/platinprotocol/solidityGEO",
   "requires": true,
   "lockfileVersion": 1,
   "dependencies": {
