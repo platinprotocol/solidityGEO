@@ -16,9 +16,8 @@ Quickstart
 
 | - Choose which polygon contract we need LightPolygon.sol or HeavyPolygon.sol. (Light cheaper by gas consumption if it consists of less than 19 points otherwise use Heavy)
 |
-| - You have to submit to constructor of the contract predefined polygon data.
-|
-| - Example: [2, 6, 3, 3, 177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 65000000, 20000000, -51000000, 25000000, -164000000, -4000000]
+| - You have to submit to constructor of the contract predefined polygon data. Example: 
+| [2, 6, 3, 3, 177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 65000000, 20000000, -51000000, 25000000, -164000000, -4000000]
 |
 | - Data format:
 |
@@ -44,6 +43,7 @@ Polygon functions
 
 | Make this contract immutable. After this functions will be executed
 | you will not be able to modify any values in this contract.
+| 
 
 - addPoints(int32[] memory points, uint8 ringIndex) public
 
@@ -51,6 +51,7 @@ Polygon functions
 | Constrain: ring must exist, and already contain points.
 | 'points' param is  array of points.
 | 'ringIndex' param is Index of ring in which points will be added.
+| 
 
 - addPoints(int32[] memory points, uint8 ringIndex, uint32 pointNum) public
 
@@ -59,6 +60,7 @@ Polygon functions
 | 'points' param is array of points.
 | 'ringIndex' param is index of ring in which points will be added.
 | 'pointNum' is the number of points(not cells, each point is two cell) from which new will be added.
+| 
 
 - removePoints(uint32 amount, uint8 ringIndex, uint32 offset) public
 
@@ -68,11 +70,13 @@ Polygon functions
 | 'amount' param is amount of points to delete(not cells, each point is two cell).
 | 'ringIndex' param is index of ring from which points will be removed.
 | 'offset' param is the number of points(not cells, each point is two cell) from which amount of points will be deleted
+| 
 
 - addRing(int32[] memory points) public
 
 | Create new ring and add points in it.
 | 'points' param is array of points.
+| 
 
 - addRing(int32[] memory points, uint8 index) public
 
@@ -81,52 +85,63 @@ Polygon functions
 | Remember that each point is two cells.
 | 'points' param is array of points.
 | 'index' param is the number of cells in rings array in which new ring will be added.
+| 
 
 - removeRing(uint8 ringIndex) public
 
 | Remove ring and all its points by ring index(Index started from 0).
 | 'ringIndex' param is index of ring.
+| 
 
 - changeContractOwner(address _to) public returns (bool)
 
 | Change contract owner to onther address.(Only contract owner can add oracle addresses and make contract immutable, only contract owner can call this function)
 | Function returns true if contract owner was changed successful.
+| 
 
 - addOracledAddress(address _oracled) public returns (bool)
 
 | Add oracle address. (Only contract owner and oracles are able to change contract state if contract is still mutable, only contract owner can call this function).
 | Function returns true if oracle address was added successful.
+| 
 
 - deleteOracledAddress(address _oracled) public returns (bool)
 
 | Delete oracle address. (Only contract owner can call this function)
 | Function returns true if oracle address was deleted successful.
+| 
 
 - getPointsByRing(uint8 ringIndex) public view returns (int32[] memory)
 
 | Get ring points by ring index.
 | 'ringIndex' is index of ring.
+| 
 
 - getPoints() public view returns (int32[] memory)
 
 | Get points of first ring(ring index 0)
+| 
 
 - getPointsAmountByRing(uint8 ringIndex) public view returns(uint32)
 
 | Get points amount by index ring(Index started from 0).
 | ringIndex param is index of ring.
+| 
 
 - getPointsAmount() public view returns(uint32)
 
 | Get total points amount(sum of points in all rings).
+| 
 
 - getRingsAmount() 
 
 | Get rings amount in polygon
+| 
 
 - isImmutable() public view returns (bool)
 
 | If function returned true then polygon is immutable (no one will be able to change its state).
+| 
 
 Circle functions
 -----------------
@@ -136,4 +151,4 @@ Circle functions
 | Generate data array with size of 3 elements.
 | Zero cell contains latitude.
 | First cell contains longitude.
-| Second cell contains radius.
+| Second cell contains radius. 
