@@ -35,32 +35,32 @@ Latitude and longitude has the same type as in polygon.
 ```solidity
  makeImmutable() public
 ```
-Make this contract immutable. After this functions will be executed
+Make this contract immutable. After this functions will be executed<br/>
 you will not be able to modify any values in this contract.
 ```solidity
  addPoints(int32[] memory points, uint8 ringIndex) public
 ```
-Add points to ring specific by index(Index started from 0).
-Constrain: ring must exist, and already contain points.
-*points* param is  array of points.
+Add points to ring specific by index(Index started from 0).<br/>
+Constrain: ring must exist, and already contain points.<br/>
+*points* param is  array of points.<br/>
 *ringIndex* param is Index of ring in which points will be added.
 ```solidity
  addPoints(int32[] memory points, uint8 ringIndex, uint32 pointNum) public
 ```
-Add points to ring specific by index(Index started from 0).
-Constrain: ring must exist, and already contain points.
-*points* param is array of points.
-*ringIndex* param is index of ring in which points will be added.
+Add points to ring specific by index(Index started from 0).<br/>
+Constrain: ring must exist, and already contain points.<br/>
+*points* param is array of points.<br/>
+*ringIndex* param is index of ring in which points will be added.<br/>
 *pointNum* is the number of points(not cells, each point is two cell) from which new will be added.
 ```solidity
  removePoints(uint32 amount, uint8 ringIndex, uint32 offset) public
 ```
-Remove points from ring specific by index(Index started from 0).
-Constrain: ring must exist, and contain enough cells to do offset * 2 + amount * 2.
-Remember that each point is two cells.
-*amount* param is amount of points to delete(not cells, each point is two cell).
-*ringIndex* param is index of ring from which points will be removed.
-*offset* param is the number of points(not cells, each point is two cell) from which amount of points will be deleted
+Remove points from ring specific by index(Index started from 0).<br/>
+Constrain: ring must exist, and contain enough cells to do offset * 2 + amount * 2.<br/>
+Remember that each point is two cells.<br/>
+*amount* param is amount of points to delete(not cells, each point is two cell).<br/>
+*ringIndex* param is index of ring from which points will be removed.<br/>
+*offset* param is the number of points(not cells, each point is two cell) from which amount of points will be deleted<br/>
 
 ```solidity
  addRing(int32[] memory points) public
@@ -70,36 +70,36 @@ Create new ring and add points in it.
 ```solidity
  addRing(int32[] memory points, uint8 index) public
  ```
-Create new ring and add points in it.
-Constrain: rings amount must be enough to do offset.
-Remember that each point is two cells.
-*points* param is array of points.
+Create new ring and add points in it.<br/>
+Constrain: rings amount must be enough to do offset.<br/>
+Remember that each point is two cells.<br/>
+*points* param is array of points.<br/>
 *index* param is the number of cells in rings array in which new ring will be added.
 ```solidity
  removeRing(uint8 ringIndex) public
 ```
-Remove ring and all its points by ring index(Index started from 0).
+Remove ring and all its points by ring index(Index started from 0).<br/>
 *ringIndex* param is index of ring.
 ```solidity
  changeContractOwner(address _to) public returns (bool)
 ```
-Change contract owner to onther address.(Only contract owner can add oracle addresses and make contract immutable, only contract owner can call this function)
+Change contract owner to onther address.(Only contract owner can add oracle addresses and make contract immutable, only contract owner can call this function)<br/>
 Function returns true if contract owner was changed successful.
 ```solidity
 addOracledAddress(address _oracled) public returns (bool)
 ```
-Add oracle address. (Only contract owner and oracles are able to change contract state if contract is still mutable, only contract owner can call this function).
-Function returns true if oracle address was added successful.
+Add oracle address. (Only contract owner and oracles are able to change contract state if contract is still mutable, only contract owner can call this function).<br/>
+Function returns true if oracle address was added successful.<br/>
 ```solidity
  deleteOracledAddress(address _oracled) public returns (bool)
 ```
-Delete oracle address. (Only contract owner can call this function)
-Function returns true if oracle address was deleted successful.
+Delete oracle address. (Only contract owner can call this function)<br/>
+Function returns true if oracle address was deleted successful.<br/>
 ```solidity
 getPointsByRing(uint8 ringIndex) public view returns (int32[] memory)
 ```
-Get ring points by ring index.
-*ringIndex* is index of ring.
+Get ring points by ring index.<br/>
+*ringIndex* is index of ring.<br/>
 ```solidity
  getPoints() public view returns (int32[] memory)
 ```
@@ -107,7 +107,7 @@ Get points of first ring(ring index 0)
 ```solidity
  getPointsAmountByRing(uint8 ringIndex) public view returns(uint32)
 ```
-Get points amount by index ring(Index started from 0).
+Get points amount by index ring(Index started from 0).<br/>
 ringIndex param is index of ring.
 ```solidity
  getPointsAmount() public view returns(uint32)
@@ -126,7 +126,7 @@ If function returned true then polygon is immutable (no one will be able to chan
 ```solidity
  getData() public view returns(int32[])
 ```
-Generate data array with size of 3 elements.
-Zero cell contains latitude.
-First cell contains longitude.
-Second cell contains radius. 
+Generate data array with size of 3 elements.<br/>
+Zero cell contains latitude.<br/>
+First cell contains longitude.<br/>
+Second cell contains radius.
