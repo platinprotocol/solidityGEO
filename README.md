@@ -1,6 +1,7 @@
 # Solidity GEO
 
 Solidity GEO implements GIS **polygon** core functions and **circle** functions.<br/>
+
 A **polygon** contains an array of rings.<br/>
 Each ring is represented as an array of points. The first point of each ring is always the same as the last point.<br/>
 Each point contain from two cells first cell is latitude, second cell is longitude.<br/>
