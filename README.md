@@ -1,15 +1,15 @@
 # Solidity GEO
 
-Solidity GEO implements GIS **polygon** core functions and **circle** functions.
-A **polygon** contains an array of rings.
-Each ring is represented as an array of points. The first point of each ring is always the same as the last point.
-Each point contain from two cells first cell is latitude, second cell is longitude.
-The polygon consists of int32 array. Where max allowed value for latitude is 90000000 and for longitude is 180000000.
-Solidity support only integers so 180000000 will represent 180.000000.
-So if you what to store geoPoint(79.123, -110.000287) you have send it like(79123000, -110000287).
+Solidity GEO implements GIS **polygon** core functions and **circle** functions.<br/>
+A **polygon** contains an array of rings.<br/>
+Each ring is represented as an array of points. The first point of each ring is always the same as the last point.<br/>
+Each point contain from two cells first cell is latitude, second cell is longitude.<br/>
+The polygon consists of int32 array. Where max allowed value for latitude is 90000000 and for longitude is 180000000.<br/>
+Solidity support only integers so 180000000 will represent 180.000000.<br/>
+So if you what to store geoPoint(79.123, -110.000287) you have send it like(79123000, -110000287).<br/>
 
-A **circle** contains latitude, longitude and radius.
-Latitude and longitude has the same type as in polygon.
+A **circle** contains latitude, longitude and radius.<br/>
+Latitude and longitude has the same type as in polygon.<br/>
 
 #### Quickstart
 
