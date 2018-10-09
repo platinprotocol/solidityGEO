@@ -1,6 +1,12 @@
 require('../tools/ArrayComparator.js');
 const utils = require('ethereumjs-util');
 var LightPolygon = artifacts.require("./LightPolygon.sol");
+var generatePoints = require("./tools/pointsGenerater.js");
+const { EVMRevert } = require('./tools/EVMRevert');
+
+require('chai')
+    .use(require('chai-as-promised'))
+    .should();
 
 contract('LightPolygon', function (accounts) {
     const initPolygon = [2, 8, 4, 4, 177200246, 110441952, 25242204, 39802040, 15242224, -39802040, 12242224, -19802040, 65000000, 20000000, -51000000, 25000000, -164000000, -4000000, -164000000, -4000000];
@@ -212,15 +218,89 @@ contract('LightPolygon', function (accounts) {
         });
     });
 
-    it("Security", async function() {
+    it("Should not be able to add points to ring with out of index", async function() {
+        let newPoints = generatePoints(10);
+        let ringIndex = 3;
+        await  contract.addPoints(newPoints, ringIndex).should.be.rejectedWith(EVMRevert);
+        await  contract.addPoints(newPoints, ringIndex, 1).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to remove points from ring with out of index", async function() {
+        let ringIndex = 3;
+        await  contract.removePoints(1, ringIndex, 1).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to remove ring with out of index", async function() {
+        let ringIndex = 3;
+        await  contract.removeRing(ringIndex).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to add points array with not even length", async function () {
+        let newPoints = generatePoints(10);
+        newPoints.push(900000);
+        let ringIndex = 1;
+
+        await  contract.addPoints(newPoints, ringIndex).should.be.rejectedWith(EVMRevert);
+        await  contract.addPoints(newPoints, ringIndex, 1).should.be.rejectedWith(EVMRevert);
+
+        newPoints = [90000000];
+        await  contract.addPoints(newPoints, ringIndex, 1).should.be.rejectedWith(EVMRevert);
+    });
+
+
+    it("Cannot be less than 3 points in the polygon", async function() {
+        let amount = 2;
+        let ringIndex = 0;
+        let offset = 1;
+        await contract.removePoints(amount, ringIndex, offset).should.be.rejectedWith(EVMRevert);
+    });
+
+    it ("Should add points to exist ring by it index", async function () {
+        let newPoints = generatePoints(10);
+        let ringIndex = 1;
+        await  contract.addPoints(newPoints, ringIndex).should.be.fulfilled;
+
+        let expectedPoints = initSecondRing.concat(newPoints);
+        let points = await contract.getPointsByRing(ringIndex);
+
+        assert(expectedPoints.equals(points), "Second ring points is not correct.");
+    });
+
+    it("Should not be able to add ring with less then 3 points", async function() {
+        let newPoints = generatePoints(2);
+        let ringIndex = 1;
+
+        await  contract.addRing(newPoints).should.be.rejectedWith(EVMRevert);
+        await  contract.addRing(newPoints, ringIndex).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to add Ring with not even cell length of points array", async function () {
+        let newPoints = generatePoints(10);
+        newPoints.push(900000);
+        let ringIndex = 1;
+
+        await  contract.addRing(newPoints).should.be.rejectedWith(EVMRevert);
+        await  contract.addRing(newPoints, ringIndex).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to insert ring in to not exist ring", async function () {
+        let newPoints = generatePoints(10);
+        let ringIndex = 3;
+
+        await  contract.addRing(newPoints, ringIndex).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to get points amount by not exist ring index", async function() {
+        let ringIndex = 3;
+       await contract.getPointsAmountByRing(ringIndex).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Only oracles address should be able to change polygon state", async function() {
         var account2 = accounts[1];
 
         let newSecondRing = [25, 22, -151, 25, -74, -88, 82, 21];
 
-        try {
-            let promice = await contract.addRing(newSecondRing, 1, {from: account2});
-            assert(false, "Not oracle user change ring.");
-        } catch(err) {}
+        let promice = await contract.addRing(newSecondRing, 1, {from: account2}).should.be.rejectedWith(EVMRevert);
 
         return contract.addOracledAddress(account2).then(function() {
             return contract.addRing(newSecondRing, 1, {from: account2});
@@ -231,13 +311,94 @@ contract('LightPolygon', function (accounts) {
 
             return contract.deleteOracledAddress(account2);
         }).then(async function() {
-            try {
-                let promice = await contract.addRing(newSecondRing, 1, {from: account2});
-                assert(false, "Not oracle user change ring.");
-            } catch(err) {}
+            await contract.addRing(newSecondRing, 1, {from: account2}).should.be.rejectedWith(EVMRevert);
         });
 
     });
 
+    it("Should not be able to change polygon state after mutable flag is turn up", async function () {
+        await contract.makeImmutable().should.be.fulfilled;
+        let isImmutable = await contract.isImmutable();
+        assert(isImmutable, "Contract is not immutable.");
+
+        let newPoints = generatePoints(5);
+
+        await contract.addRing(newPoints).should.be.rejectedWith(EVMRevert);
+        await contract.addRing(newPoints, 1).should.be.rejectedWith(EVMRevert);
+        await contract.addPoints(newPoints, 1).should.be.rejectedWith(EVMRevert);
+        await contract.addPoints(newPoints, 1, 1).should.be.rejectedWith(EVMRevert);
+        await contract.removePoints(1, 1, 1).should.be.rejectedWith(EVMRevert);
+        await contract.removeRing(1).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should be able to change contract owner", async function() {
+        await contract.changeContractOwner(accounts[1]).should.be.fulfilled;
+        let newPoints = generatePoints(5);
+
+        await contract.changeContractOwner(accounts[0]).should.be.rejectedWith(EVMRevert);
+        await contract.changeContractOwner(accounts[0], {from: accounts[1]}).should.be.fulfilled;
+    });
+
+    it("Should not be able to create polygon with 2 points", async function () {
+        let polygonData = [1, 2, 2];
+        let newPoints = generatePoints(2);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon with 2 points in one of rings", async function () {
+        let polygonData = [2, 6, 4, 2];
+        let newPoints = generatePoints(6);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon with wrong identificator of points amount", async function() {
+        let polygonData = [2, 5, 3, 3];
+        let newPoints = generatePoints(6);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon with wrong identificator of points amount in ring", async function() {
+        let polygonData = [2, 7, 3, 4];
+        let newPoints = generatePoints(6);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+
+        polygonData = [2, 7, 3, 3];
+        newPoints = generatePoints(6);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon with not eval points cells", async function() {
+        let polygonData = [2, 7, 3, 4];
+        let newPoints = generatePoints(7);
+        newPoints.push(90000000);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon with more then max rings amount", async function() {
+        let polygonData = [256, 7, 3, 4];
+        let newPoints = generatePoints(7);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon without ring", async function() {
+        let polygonData = [0, 7, 3, 4];
+        let newPoints = generatePoints(7);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
+
+    it("Should not be able to create polygon without incorrect points amount", async function() {
+        let polygonData = [2, 8, 4, 4];
+        let newPoints = generatePoints(9);
+        polygonData = polygonData.concat(newPoints);
+        await LightPolygon.new(polygonData).should.be.rejectedWith(EVMRevert);
+    });
 });
 

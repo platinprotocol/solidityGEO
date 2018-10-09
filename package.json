@@ -13,7 +13,11 @@
   "dependencies": {
     "truffle": "v5.0.0-beta.0",
     "bignumber": "^1.1.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "ethereumjs-util": "^5.2.0",
+    "ethereumjs-testrpc": "^6.0.3",
+    "solidity-coverage": "^0.5.11",
     "truffle-privatekey-provider": "^0.1.0"
   }
 }
