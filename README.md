@@ -52,7 +52,7 @@ Requirements: ring to exist and have some points.<br/>
 insert points to the ring specified by index (index started from 0).<br/>
 Requirements: ring to exist and have some points.<br/>
 *points* array of points.<br/>
-*ringIndex*index of ring in which points will be added.<br/>
+*ringIndex* index of ring in which points will be added.<br/>
 *pointNum* is the number existing point in the ring specified points will be inserted after.
 ```solidity
  removePoints(uint32 amount, uint8 ringIndex, uint32 offset) public
@@ -128,3 +128,8 @@ If function returned true then polygon is immutable (no one will be able to chan
  getData() public view returns(int32[])
 ```
 Returns array of circle data. First 2 items in array are coordinates of the center point, 3rd item is the radius. <br>
+
+## License
+
+The Solidity GEO library is licensed under the
+[MIT License](https://opensource.org/licenses/MIT), also included in our repository in the `LICENSE` file.
