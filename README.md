@@ -1,6 +1,6 @@
 # Solidity GEO
 
-Solidity GEO is a library that allows to operate with geospatial objects in Solidity. It is inspired by PostGIS and its design principles are derived from PostGIS as much as possible. Solidity GEO's main focus is effectively storing geo primitives on the chain and operating with them with the minimum amount of gas required.<br/>  
+Solidity GEO is a library that enables operation with geospatial objects in Solidity. Its design principles and patterns are based on the highly reliable and popular PostGIS. Solidity GEO's main focus is effectively expressing geospatial primitives on chain and enabling operations with a minimal amount of gas required.<br/>  
 
 Solidity GEO currently has  **polygons** and **circles** implemented.<br/>
 
